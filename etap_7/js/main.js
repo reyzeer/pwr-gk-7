@@ -23,12 +23,22 @@ var X, Y, Z;
  * funkcja główna
  */
 function runWebGL() {
+    getRotation();
     gl_canvas = document.getElementById("glcanvas");
     gl_ctx = gl_getContext(gl_canvas);
     gl_initShaders();
     gl_initBuffers();
     gl_setMatrix();
     gl_draw();
+}
+
+/**
+ * osie obrotu
+ */
+function getRotation() {
+    X = document.getElementById('rotateX').checked;
+    Y = document.getElementById('rotateY').checked;
+    Z = document.getElementById('rotateZ').checked;
 }
 
 /**
