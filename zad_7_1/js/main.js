@@ -14,6 +14,8 @@ var _matrixView;
 var rotationSpeed = 0.001;
 var zoomRatio = -6;
 
+var startAnim = false;
+
 var _triangleVertexBuffer;
 var _triangleFacesBuffer;
 
@@ -187,6 +189,9 @@ function gl_draw() {
 
     var timeOld = 0;
     var animate = function (time) {
+
+        startAnim = true;
+
         var dAngle = rotationSpeed * (time - timeOld);
         if (X) {
             MATRIX.rotateX(_matrixMovement, dAngle);
@@ -217,5 +222,10 @@ function gl_draw() {
 
         window.requestAnimationFrame(animate);
     };
-    animate(0);
+
+    // Start annimation - animation start only one time in pgrogram
+    if (!startAnim){
+        animate(0);
+    }
+
 }
