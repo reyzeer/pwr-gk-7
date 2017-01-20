@@ -22,6 +22,8 @@ var _triangleFacesBuffer;
 
 var X, Y, Z;
 
+var textureFile = "";
+
 /**
  * funkcja główna
  */
@@ -43,6 +45,16 @@ function getRotation() {
     X = document.getElementById('rotateX').checked;
     Y = document.getElementById('rotateY').checked;
     Z = document.getElementById('rotateZ').checked;
+}
+
+function getTexture() {
+    if (document.getElementById('texture1').checked) {
+        textureFile = "cubetexture.png";
+    } else if (document.getElementById('texture2').checked) {
+        textureFile = "cubetexture2.png";
+    } else if (document.getElementById('texture3').checked) {
+        textureFile = "cubetexture3.png";
+    }
 }
 
 /**
@@ -209,8 +221,11 @@ function gl_setMatrix () {
  * @returns {*}
  */
 function gl_initTexture() {
+
+    getTexture();
+
     var img = new Image();
-    img.src = 'cubetexture.png';
+    img.src = textureFile;
     img.webglTexture = false;
 
     img.onload = function(e) {
