@@ -17,6 +17,8 @@ var zoomRatio = -6;
 var _triangleVertexBuffer;
 var _triangleFacesBuffer;
 
+var X, Y, Z;
+
 /**
  * funkcja główna
  */
@@ -108,12 +110,22 @@ function gl_initShaders () {
  */
 function gl_initBuffers () {
     var triangleVertices = [
-        -1, -1, 0, // bottom left
-        0, 0, 1, // submit color: blue
-        1, -1, 0, // bottom right
-        1, 1, 1, // submit color: white
-        1, 1, 0, // top right
-        1, 0, 0 // submit color: red
+        -1, -1, -1,
+        0, 0, 0,
+        1, -1, -1,
+        1, 0, 0,
+        1, 1, -1,
+        1, 1, 0,
+        -1, 1, -1,
+        0, 1, 0,
+        -1, -1, 1,
+        0, 0, 1,
+        1, -1, 1,
+        1, 0, 1,
+        1, 1, 1,
+        1, 1, 1,
+        -1, 1, 1,
+        0, 1, 1
     ];
 
     _triangleVertexBuffer = gl_ctx.createBuffer();
@@ -124,7 +136,20 @@ function gl_initBuffers () {
         gl_ctx.STATIC_DRAW
     );
 
-    var triangleFaces = [0, 1, 2];
+    var triangleFaces = [
+        0, 1, 2,
+        0, 2, 3,
+        4, 5, 6,
+        4, 6, 7,
+        0, 3, 7,
+        0, 4, 7,
+        1, 2, 6,
+        1, 5, 6,
+        2, 3, 6,
+        3, 7, 6,
+        0, 1, 5,
+        0, 4, 5
+    ];
 
     _triangleFacesBuffer = gl_ctx.createBuffer();
     gl_ctx.bindBuffer(gl_ctx.ELEMENT_ARRAY_BUFFER, _triangleFacesBuffer);
@@ -162,7 +187,15 @@ function gl_draw() {
     var timeOld = 0;
     var animate = function (time) {
         var dAngle = rotationSpeed * (time - timeOld);
-        MATRIX.rotateY(_matrixMovement, dAngle);
+        if (X) {
+            MATRIX.rotateX(_matrixMovement, dAngle);
+        }
+        if (Y) {
+            MATRIX.rotateY(_matrixMovement, dAngle);
+        }
+        if (Z) {
+            MATRIX.rotateZ(_matrixMovement, dAngle);
+        }
         timeOld = time;
 
         gl_ctx.viewport(0.0, 0.0, gl_canvas.width, gl_canvas.height);
@@ -182,7 +215,7 @@ function gl_draw() {
         gl_ctx.bindBuffer(gl_ctx.ARRAY_BUFFER, _triangleVertexBuffer);
         gl_ctx.bindBuffer(gl_ctx.ELEMENT_ARRAY_BUFFER, _triangleFacesBuffer);
 
-        gl_ctx.drawElements(gl_ctx.TRIANGLES, 3, gl_ctx.UNSIGNED_SHORT, 0);
+        gl_ctx.drawElements(gl_ctx.TRIANGLES, 6*2*3, gl_ctx.UNSIGNED_SHORT, 0);
         gl_ctx.flush();
 
         window.requestAnimationFrame(animate);
